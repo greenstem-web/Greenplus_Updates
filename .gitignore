@@ -1,0 +1,16 @@
+﻿# Temporary files
+*.tmp
+*.log
+*.bak
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# DO NOT UPLOAD LOGS
+**/Logs/
+**/logs/
+
+# DO NOT UPLOAD USER DATA
+**/appsettings.json
+*.config
