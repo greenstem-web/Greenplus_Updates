@@ -2,8 +2,8 @@
   "migrations": [
     {
       "version": "1.1",
-      "description": "Add SessionToken column to User table",
-      "sqlUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.0/database/001_add_session_token.sql",
+      "description": "Add Testing column to User table (NVARCHAR(100))",
+      "sqlUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.0/database/001_add_testing_column.sql",
       "rollbackUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.0/database/001_rollback.sql"
     }
   ]
