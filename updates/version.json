@@ -1,16 +1,38 @@
-{
-  "version": "1.0.0.0",
-  "releaseDate": "2025-11-19",
-  "appUrl": "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.0.0/GreenplusAccounting_v1.0.0.zip",
-  "changelog": "https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v1.0.0",
-  "mandatory": false,
-  "minVersion": "1.0.0.0",
-  "checksum": {
-    "algorithm": "SHA256",
-    "value": ""
-  },
-  "database": {
-    "currentVersion": "1.0",
-    "migrationsUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/updates/database/migrations.json"
-  }
+﻿{
+    "version":  "1.0.0.0",
+    "files":  [
+                  {
+                      "name":  "CoreWinUI.exe",
+                      "url":  "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.0.0/CoreWinUI.exe",
+                      "size":  304128,
+                      "checksum":  "B2B3C0FC17986AFBB0500D30E34234FE3E4A427420064D4EEC40E76A004DE43A"
+                  },
+                  {
+                      "name":  "CoreWinUI.dll",
+                      "url":  "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.0.0/CoreWinUI.dll",
+                      "size":  1311744,
+                      "checksum":  "59F6237AD55B97DBA87FC6D3371F187D8E2EF9F57A86DF835A85D9F7BF563A5D"
+                  },
+                  {
+                      "name":  "Data.dll",
+                      "url":  "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.0.0/Data.dll",
+                      "size":  815616,
+                      "checksum":  "94F1B213AE08DF56B97FCC6E9F1285AFFF7A4308E0468921D6E25418CA69632E"
+                  },
+                  {
+                      "name":  "CoreWinUI.runtimeconfig.json",
+                      "url":  "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.0.0/CoreWinUI.runtimeconfig.json",
+                      "size":  513,
+                      "checksum":  "91BD0A7B1D19128366E8DBB1AA6AA1C093868D8A322419FB9ACC3F7B9E5506D4"
+                  }
+              ],
+    "mandatory":  false,
+    "downloadUrl":  "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.0.0",
+    "database":  {
+                     "currentVersion":  "1.0.0",
+                     "migrationsUrl":  "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/updates/database/migrations.json"
+                 },
+    "releaseDate":  "2025-11-19",
+    "changelog":  "https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v1.0.0",
+    "minVersion":  "1.0.0.0"
 }
