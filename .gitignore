@@ -1,16 +1,23 @@
-﻿# Temporary files
-*.tmp
-*.log
-*.bak
-
-# OS files
-.DS_Store
-Thumbs.db
-
-# DO NOT UPLOAD LOGS
+﻿# Logs
 **/Logs/
 **/logs/
+*.log
 
-# DO NOT UPLOAD USER DATA
-**/appsettings.json
-*.config
+# Reports
+**/Report/
+**/Reports/
+
+# GitHub Token
+github.token
+
+# User Settings
+appsettings.json
+appsettings.Development.json
+
+# Temp
+*.tmp
+*.bak
+
+# OS
+.DS_Store
+Thumbs.db
