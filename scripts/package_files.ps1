@@ -1,10 +1,10 @@
-# Simple Package Script - Only 4 Files
+# Simple Package Script - Generates XML for AutoUpdater.NET
 param(
     [string]$Version = "1.1.0",
     [string]$SourceDir = "D:\Greenplus_Local\GreenplusLocal\CoreWinUI\bin\Debug\net9.0-windows"
 )
 
-Write-Host "=== Packaging Greenplus v$Version (4 files only) ===" -ForegroundColor Green
+Write-Host "=== Packaging Greenplus v$Version ===" -ForegroundColor Green
 Write-Host ""
 
 # Output paths
@@ -32,13 +32,13 @@ foreach ($file in $FilesToPackage) {
     
     if (Test-Path $sourcePath) {
         Copy-Item -Path $sourcePath -Destination $destPath -Force
-        Write-Host "  $file" -ForegroundColor Green
+        Write-Host "  OK $file" -ForegroundColor Green
     } else {
-        Write-Host "  $file NOT FOUND!" -ForegroundColor Red
+        Write-Host "  ERROR $file NOT FOUND!" -ForegroundColor Red
     }
 }
 
-# Create ZIP from the 4 files
+# Create ZIP
 Write-Host ""
 Write-Host "Creating ZIP..." -ForegroundColor Cyan
 
@@ -51,27 +51,33 @@ Compress-Archive -Path "$FilesDir\*" -DestinationPath $ZipPath -Force
 $ZipSize = [math]::Round((Get-Item $ZipPath).Length / 1MB, 2)
 Write-Host "ZIP created: $ZipSize MB" -ForegroundColor Green
 
-# Create version.json
-$versionJson = @{
-    version = "$Version.0"
-    url = "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v$Version/GreenplusAccounting_v$Version.zip"
-    changelog = "https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v$Version"
-    mandatory = @{
-        value = $false
-        minVersion = "1.0.0.0"
-    }
-    database = @{
-        currentVersion = $Version
-        migrationsUrl = "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/updates/database/migrations.json"
-    }
+# ✅ Create update.xml (AutoUpdater.NET format)
+$updateXml = @"
+<?xml version="1.0" encoding="UTF-8"?>
+<item>
+  <version>$Version.0</version>
+  <url>https://github.com/greenstem-web/Greenplus_Updates/releases/download/v$Version/GreenplusAccounting_v$Version.zip</url>
+  <changelog>https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v$Version</changelog>
+  <mandatory>false</mandatory>
+</item>
+"@
+
+$updateXmlPath = "D:\Greenplus_Updates\updates\update.xml"
+$updateXml | Out-File -FilePath $updateXmlPath -Encoding UTF8
+
+# ✅ Create version-metadata.json (Database info)
+$metadataJson = @{
+    currentVersion = $Version
+    migrationsUrl = "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/updates/database/migrations.json"
 } | ConvertTo-Json -Depth 10
 
-$versionJsonPath = "D:\Greenplus_Updates\updates\version.json"
-$versionJson | Out-File -FilePath $versionJsonPath -Encoding UTF8
+$metadataPath = "D:\Greenplus_Updates\updates\version-metadata.json"
+$metadataJson | Out-File -FilePath $metadataPath -Encoding UTF8
 
 Write-Host ""
 Write-Host "=== Complete ===" -ForegroundColor Green
 Write-Host "ZIP: $ZipPath" -ForegroundColor White
-Write-Host "version.json: $versionJsonPath" -ForegroundColor White
+Write-Host "XML: $updateXmlPath" -ForegroundColor White
+Write-Host "Metadata: $metadataPath" -ForegroundColor White
 Write-Host ""
 Write-Host "Next: gh release create v$Version `"$ZipPath`"" -ForegroundColor Yellow
