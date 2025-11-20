@@ -1,14 +1,19 @@
-# Package Specific Files for Greenplus Accounting
-# Only packages: EXE, DLL, runtime config (NO ZIP, NO unnecessary files)
-
+# Simple Package Script - Only 4 Files
 param(
-    [string]$Version = "1.0.0",
-    [string]$SourceDir = "D:\Greenplus_Local\GreenplusLocal\CoreWinUI\bin\Debug\net9.0-windows",
-    [string]$OutputDir = "D:\Greenplus_Updates\releases\v$Version\files"
+    [string]$Version = "1.1.0",
+    [string]$SourceDir = "D:\Greenplus_Local\GreenplusLocal\CoreWinUI\bin\Debug\net9.0-windows"
 )
 
-Write-Host "=== Packaging Greenplus Accounting v$Version ===" -ForegroundColor Green
+Write-Host "=== Packaging Greenplus v$Version (4 files only) ===" -ForegroundColor Green
 Write-Host ""
+
+# Output paths
+$OutputBase = "D:\Greenplus_Updates\releases\v$Version"
+$FilesDir = "$OutputBase\files"
+$ZipPath = "$OutputBase\GreenplusAccounting_v$Version.zip"
+
+# Create directories
+New-Item -ItemType Directory -Path $FilesDir -Force | Out-Null
 
 # Files to package
 $FilesToPackage = @(
@@ -18,72 +23,55 @@ $FilesToPackage = @(
     "CoreWinUI.runtimeconfig.json"
 )
 
-# Create output directory
-if (-not (Test-Path $OutputDir)) {
-    New-Item -ItemType Directory -Path $OutputDir -Force | Out-Null
-}
+Write-Host "Copying 4 files..." -ForegroundColor Cyan
 
-Write-Host "Source: $SourceDir" -ForegroundColor Cyan
-Write-Host "Output: $OutputDir" -ForegroundColor Cyan
-Write-Host ""
-
-$fileInfoList = @()
-
+# Copy files
 foreach ($file in $FilesToPackage) {
     $sourcePath = Join-Path $SourceDir $file
-    $destPath = Join-Path $OutputDir $file
-
+    $destPath = Join-Path $FilesDir $file
+    
     if (Test-Path $sourcePath) {
-        # Copy file
         Copy-Item -Path $sourcePath -Destination $destPath -Force
-        
-        # Calculate SHA256
-        $hash = Get-FileHash -Path $destPath -Algorithm SHA256
-        $size = (Get-Item $destPath).Length
-
-        Write-Host "  OK $file" -ForegroundColor Green
-        Write-Host "     Size: $([math]::Round($size / 1KB, 2)) KB" -ForegroundColor Gray
-        Write-Host "     SHA256: $($hash.Hash.Substring(0, 16))..." -ForegroundColor Gray
-        Write-Host ""
-
-        # Store info for version.json
-        $fileInfoList += [PSCustomObject]@{
-            name = $file
-            url = "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v$Version/$file"
-            size = $size
-            checksum = $hash.Hash
-        }
-    }
-    else {
-        Write-Host "  ERROR $file NOT FOUND!" -ForegroundColor Red
+        Write-Host "  $file" -ForegroundColor Green
+    } else {
+        Write-Host "  $file NOT FOUND!" -ForegroundColor Red
     }
 }
 
-# Generate version.json
+# Create ZIP from the 4 files
+Write-Host ""
+Write-Host "Creating ZIP..." -ForegroundColor Cyan
+
+if (Test-Path $ZipPath) {
+    Remove-Item $ZipPath -Force
+}
+
+Compress-Archive -Path "$FilesDir\*" -DestinationPath $ZipPath -Force
+
+$ZipSize = [math]::Round((Get-Item $ZipPath).Length / 1MB, 2)
+Write-Host "ZIP created: $ZipSize MB" -ForegroundColor Green
+
+# Create version.json
 $versionJson = @{
     version = "$Version.0"
-    releaseDate = (Get-Date -Format "yyyy-MM-dd")
-    downloadUrl = "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v$Version"
+    url = "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v$Version/GreenplusAccounting_v$Version.zip"
     changelog = "https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v$Version"
-    mandatory = $false
-    minVersion = "1.0.0.0"
-    files = $fileInfoList
+    mandatory = @{
+        value = $false
+        minVersion = "1.0.0.0"
+    }
     database = @{
         currentVersion = $Version
         migrationsUrl = "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/updates/database/migrations.json"
     }
 } | ConvertTo-Json -Depth 10
 
-# Save version.json
 $versionJsonPath = "D:\Greenplus_Updates\updates\version.json"
 $versionJson | Out-File -FilePath $versionJsonPath -Encoding UTF8
 
 Write-Host ""
-Write-Host "=== Package Complete ===" -ForegroundColor Green
-Write-Host "Files: $OutputDir" -ForegroundColor White
+Write-Host "=== Complete ===" -ForegroundColor Green
+Write-Host "ZIP: $ZipPath" -ForegroundColor White
 Write-Host "version.json: $versionJsonPath" -ForegroundColor White
 Write-Host ""
-Write-Host "Next Steps:" -ForegroundColor Yellow
-Write-Host "1. Review version.json" -ForegroundColor Gray
-Write-Host "2. Commit to GitHub" -ForegroundColor Gray
-Write-Host "3. Create GitHub Release" -ForegroundColor Gray
+Write-Host "Next: gh release create v$Version `"$ZipPath`"" -ForegroundColor Yellow
