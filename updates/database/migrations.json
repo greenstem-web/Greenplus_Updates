@@ -5,6 +5,12 @@
       "description": "Add Testing column to User table (NVARCHAR(100))",
       "sqlUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.0/database/001_add_testing_column.sql",
       "rollbackUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.0/database/001_rollback.sql"
+    },
+    {
+      "version": "1.1.1",
+      "description": "Add Testing2 column to User table (NVARCHAR(200))",
+      "sqlUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.1/database/002_add_testing2_column.sql",
+      "rollbackUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.1/database/002_rollback.sql"
     }
   ]
 }

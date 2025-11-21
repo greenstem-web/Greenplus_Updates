@@ -1,13 +1,13 @@
 ﻿{
-  "version": "1.1.0.0",
-  "url": "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.1.0/GreenplusAccounting_v1.1.0.zip",
-  "changelog": "https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v1.1.0",
+  "version": "1.1.1.0",
+  "url": "https://github.com/greenstem-web/Greenplus_Updates/releases/download/v1.1.1/GreenplusAccounting_v1.1.1.zip",
+  "changelog": "https://github.com/greenstem-web/Greenplus_Updates/releases/tag/v1.1.1",
   "mandatory": {
     "value": false,
     "minVersion": "1.0.0.0"
   },
   "database": {
-    "currentVersion": "1.1",
+    "currentVersion": "1.1.1",
     "migrationsUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/updates/database/migrations.json"
   }
 }
