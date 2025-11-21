@@ -1,7 +1,7 @@
 -- =============================================
 -- Rollback: Remove Testing Column
 -- Version: 1.1.0
--- Date: 2025-11-19
+-- Date: 2025-11-21
 -- Author: Tee-FY
 -- =============================================
 
@@ -17,7 +17,8 @@ PRINT '';
 IF EXISTS (
     SELECT * 
     FROM INFORMATION_SCHEMA.COLUMNS 
-    WHERE TABLE_NAME = 'User' 
+    WHERE TABLE_SCHEMA = 'dbo'
+    AND TABLE_NAME = 'User' 
     AND COLUMN_NAME = 'Testing'
 )
 BEGIN
@@ -41,4 +42,4 @@ COMMIT TRANSACTION;
 PRINT '========================================';
 PRINT 'Rollback v1.1.0 Completed Successfully';
 PRINT '========================================';
-GO
+-- Removed GO statement
