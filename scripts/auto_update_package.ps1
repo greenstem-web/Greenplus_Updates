@@ -30,8 +30,7 @@ $FilesToPackage = @(
     "CoreWinUI.deps.json",
     "CoreWinUI.runtimeconfig.json",
     "CoreWinUI.pdb",
-    "Data.pdb",
-    "appsettings.json"
+    "Data.pdb"
 )
 
 Write-Host "[1/4] Checking source files..." -ForegroundColor Yellow
@@ -63,16 +62,22 @@ foreach ($file in $FilesToPackage) {
     if (Test-Path $sourcePath) {
         Copy-Item -Path $sourcePath -Destination $destPath -Force
         $fileSize = [math]::Round((Get-Item $sourcePath).Length / 1KB, 2)
-        Write-Host "  $file ($fileSize KB)" -ForegroundColor Green
+        Write-Host "  ✓ $file ($fileSize KB)" -ForegroundColor Green
         $SuccessCount++
     } else {
-        Write-Host "  $file NOT FOUND!" -ForegroundColor Red
+        Write-Host "  ✗ $file NOT FOUND!" -ForegroundColor Red
         $FailCount++
     }
 }
 
 Write-Host ""
 Write-Host "  Copied: $SuccessCount files" -ForegroundColor Green
+
+# ✅ Show excluded files notice
+Write-Host ""
+Write-Host "  Excluded files (user settings preserved):" -ForegroundColor Yellow
+Write-Host "    • appsettings.json (user's database configuration)" -ForegroundColor Gray
+
 if ($FailCount -gt 0) {
     Write-Host "  Failed: $FailCount files" -ForegroundColor Red
     exit 1
@@ -126,7 +131,6 @@ $readmeContent = @"
 - CoreWinUI.runtimeconfig.json (Runtime configuration)
 - CoreWinUI.pdb (Debug symbols)
 - Data.pdb (Debug symbols)
-- appsettings.json (Application settings)
 
 ## Package Details
 
@@ -141,15 +145,24 @@ This is an AUTO-UPDATE package for existing users.
 
 The application will:
 1. Download this ZIP automatically
-2. Extract and replace files
-3. Restart the application
+2. Extract and replace executable files ONLY
+3. Preserve your appsettings.json configuration
+4. Restart the application
+
+## Important Notes
+
+✅ Your database connection settings will NOT be affected
+✅ Your custom configurations will be preserved
+✅ No need to reconfigure after update
+✅ Application will connect to the same databases as before
 
 ## Manual Installation
 
 If you need to manually install:
 1. Close CoreWinUI.exe
 2. Extract ZIP to installation directory
-3. Restart CoreWinUI.exe
+3. **DO NOT overwrite appsettings.json** (if prompted)
+4. Restart CoreWinUI.exe
 "@
 
 $readmeContent | Out-File -FilePath $readmePath -Encoding UTF8
@@ -165,6 +178,10 @@ Write-Host "  Files: $SuccessCount" -ForegroundColor White
 Write-Host ""
 Write-Host "XML Updated:" -ForegroundColor Cyan
 Write-Host "  $updateXmlPath" -ForegroundColor White
+Write-Host ""
+Write-Host "⚠️  Important:" -ForegroundColor Yellow
+Write-Host "  appsettings.json is EXCLUDED from this update" -ForegroundColor White
+Write-Host "  User's database configurations will be preserved" -ForegroundColor White
 Write-Host ""
 Write-Host "Next Steps:" -ForegroundColor Yellow
 Write-Host "  1. Update migrations.json (if database changes)" -ForegroundColor White
