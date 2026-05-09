@@ -199,21 +199,27 @@ PRINT '========================================';
 
 ### Step 5 — Update migrations.json
 
-Edit `D:\Greenplus_Updates\updates\database\migrations.json` and add the new entry:
+Edit `D:\Greenplus_Updates\updates\database\migrations.json` and append a new entry for each release. Always keep previous entries — do not remove them.
 
 ```json
 {
   "migrations": [
     {
-      "version": "1.1",
+      "version": "1.0.0",
+      "description": "Initial schema",
+      "scriptUrl": "..."
+    },
+    {
+      "version": "1.1.0",
       "description": "Add {ColumnName} to {TableName} (NVARCHAR(100))",
-      "sqlUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v{version}/database/001_add_{columnname}.sql",
+      "scriptUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v{version}/database/001_add_{columnname}.sql",
       "rollbackUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v{version}/database/001_rollback.sql"
     }
   ]
 }
 ```
 
+> Use full version format `"1.1.0"` not `"1.1"`. The app compares this against the installed version to decide which migrations to run.
 > For each new version, append a new object to the `migrations` array. Do not remove old entries.
 
 ---
@@ -342,6 +348,55 @@ Automatic via built-in auto-update
 | `gh release create` — no matches for zip path | Relative path not found | Use full absolute path `D:\Greenplus_Updates\releases\...` |
 | Build succeeded but files not visible | Looking in wrong folder | Check `CoreWinUI\bin\Release\net9.0-windows\win-x64\publish\` |
 | Migration runs but column already exists | Previous partial run | Script is idempotent — it skips if column already exists |
+
+---
+
+## Part C — Testing the Update
+
+Use this to simulate a client machine receiving the update for the first time.
+
+### Step 1 — Set .csproj to Old Version
+
+In `CoreWinUI.csproj`, temporarily set the version to one below the release you want to test:
+
+```xml
+<AssemblyVersion>1.0.0.0</AssemblyVersion>
+<FileVersion>1.0.0.0</FileVersion>
+<Version>1.0.0</Version>
+```
+
+### Step 2 — Run the App from Visual Studio
+
+Launch the app (Debug or Release mode). The app will:
+1. Read `update.xml` from GitHub — detects `1.1.0` is available
+2. Show **"Update Available"** popup
+3. On clicking **Yes** — downloads the ZIP from the GitHub release
+4. Executes the migration SQL — adds the new column
+5. Inserts a row into `SchemaVersion`
+6. Restarts the app automatically
+
+### Step 3 — Verify in SSMS
+
+```sql
+-- Confirm column was added
+SELECT COLUMN_NAME, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH
+FROM INFORMATION_SCHEMA.COLUMNS
+WHERE TABLE_NAME = 'TestTable' AND COLUMN_NAME = 'UpdateColumn1';
+
+-- Confirm SchemaVersion was recorded
+SELECT [Version], [AppliedDate], [Description]
+FROM [GreenAcc2025].[dbo].[SchemaVersion];
+```
+
+### Step 4 — Restore .csproj Version After Testing
+
+Change `.csproj` back to the current release version:
+
+```xml
+<AssemblyVersion>1.1.0.0</AssemblyVersion>
+<FileVersion>1.1.0.0</FileVersion>
+<Version>1.1.0</Version>
+```
 
 ---
 
