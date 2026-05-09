@@ -1,7 +1,7 @@
 -- =============================================
--- Rollback: Remove Testing Column
+-- Rollback: Remove UpdateColumn1 from TestTable
 -- Version: 1.1.0
--- Date: 2025-11-21
+-- Date: 2026-05-09
 -- Author: Tee-FY
 -- =============================================
 
@@ -9,31 +9,29 @@ BEGIN TRANSACTION;
 
 PRINT '========================================';
 PRINT 'Starting Rollback v1.1.0';
-PRINT 'Remove Testing column from User table';
+PRINT 'Remove UpdateColumn1 from TestTable';
 PRINT '========================================';
 PRINT '';
 
--- Check if Testing column exists before dropping
 IF EXISTS (
     SELECT * 
     FROM INFORMATION_SCHEMA.COLUMNS 
     WHERE TABLE_SCHEMA = 'dbo'
-    AND TABLE_NAME = 'User' 
-    AND COLUMN_NAME = 'Testing'
+    AND TABLE_NAME = 'TestTable' 
+    AND COLUMN_NAME = 'UpdateColumn1'
 )
 BEGIN
-    PRINT 'Removing Testing column...';
-    
-    -- Drop the column
-    ALTER TABLE [dbo].[User]
-    DROP COLUMN [Testing];
-    
-    PRINT 'SUCCESS: Testing column removed from User table';
+    PRINT 'Removing UpdateColumn1 column...';
+
+    ALTER TABLE [dbo].[TestTable]
+    DROP COLUMN [UpdateColumn1];
+
+    PRINT 'SUCCESS: UpdateColumn1 column removed from TestTable';
     PRINT '';
 END
 ELSE
 BEGIN
-    PRINT 'INFO: Testing column does not exist - Nothing to rollback';
+    PRINT 'INFO: UpdateColumn1 column does not exist - Skipping';
     PRINT '';
 END
 
@@ -42,4 +40,3 @@ COMMIT TRANSACTION;
 PRINT '========================================';
 PRINT 'Rollback v1.1.0 Completed Successfully';
 PRINT '========================================';
--- Removed GO statement

@@ -62,10 +62,10 @@ foreach ($file in $FilesToPackage) {
     if (Test-Path $sourcePath) {
         Copy-Item -Path $sourcePath -Destination $destPath -Force
         $fileSize = [math]::Round((Get-Item $sourcePath).Length / 1KB, 2)
-        Write-Host "  ✓ $file ($fileSize KB)" -ForegroundColor Green
+        Write-Host "  [OK] $file ($fileSize KB)" -ForegroundColor Green
         $SuccessCount++
     } else {
-        Write-Host "  ✗ $file NOT FOUND!" -ForegroundColor Red
+        Write-Host "  [MISSING] $file NOT FOUND!" -ForegroundColor Red
         $FailCount++
     }
 }
@@ -193,11 +193,7 @@ Write-Host $Version -NoNewline -ForegroundColor Gray
 Write-Host ': Update package"' -ForegroundColor Gray
 Write-Host "     git push origin main" -ForegroundColor Gray
 Write-Host "  3. Create GitHub release:" -ForegroundColor White
-Write-Host "     gh release create v$Version " -NoNewline -ForegroundColor Gray
-Write-Host """$ZipPath""" -NoNewline -ForegroundColor Gray
-Write-Host ' --title "v' -NoNewline -ForegroundColor Gray
-Write-Host $Version -NoNewline -ForegroundColor Gray
-Write-Host '"' -ForegroundColor Gray
+Write-Host "     gh release create v$Version '$ZipPath' --title 'v$Version'" -ForegroundColor Gray
 Write-Host ""
 
 explorer.exe $OutputBase

@@ -1,7 +1,7 @@
 -- =============================================
--- Migration: Add Testing Column to User Table
+-- Migration: Add UpdateColumn1 to TestTable
 -- Version: 1.1.0
--- Date: 2025-11-21
+-- Date: 2026-05-09
 -- Author: Tee-FY
 -- =============================================
 
@@ -9,32 +9,30 @@ BEGIN TRANSACTION;
 
 PRINT '========================================';
 PRINT 'Starting Migration v1.1.0';
-PRINT 'Add Testing column to User table';
+PRINT 'Add UpdateColumn1 column to TestTable';
 PRINT '========================================';
 PRINT '';
 
--- Check if Testing column already exists
 IF NOT EXISTS (
     SELECT * 
     FROM INFORMATION_SCHEMA.COLUMNS 
     WHERE TABLE_SCHEMA = 'dbo'
-    AND TABLE_NAME = 'User' 
-    AND COLUMN_NAME = 'Testing'
+    AND TABLE_NAME = 'TestTable' 
+    AND COLUMN_NAME = 'UpdateColumn1'
 )
 BEGIN
-    PRINT 'Adding Testing column...';
-    
-    -- Add the new column
-    ALTER TABLE [dbo].[User]
-    ADD [Testing] NVARCHAR(100) NULL;
-    
-    PRINT 'SUCCESS: Testing column added to User table';
+    PRINT 'Adding UpdateColumn1 column...';
+
+    ALTER TABLE [dbo].[TestTable]
+    ADD [UpdateColumn1] NVARCHAR(100) NULL;
+
+    PRINT 'SUCCESS: UpdateColumn1 column added to TestTable';
     PRINT 'Column Details: NVARCHAR(100), NULL allowed';
     PRINT '';
 END
 ELSE
 BEGIN
-    PRINT 'INFO: Testing column already exists - Skipping';
+    PRINT 'INFO: UpdateColumn1 column already exists - Skipping';
     PRINT '';
 END
 
@@ -43,4 +41,3 @@ COMMIT TRANSACTION;
 PRINT '========================================';
 PRINT 'Migration v1.1.0 Completed Successfully';
 PRINT '========================================';
--- Removed GO statement
