@@ -41,6 +41,12 @@
       "description": "Add UpdateColumn8 to TestTable (NVARCHAR(100))",
       "scriptUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.8/database/001_add_updatecolumn8.sql",
       "rollbackUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.8/database/001_rollback.sql"
+    },
+    {
+      "version": "1.1.9",
+      "description": "Add UpdateColumn9 to TestTable (NVARCHAR(100))",
+      "scriptUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.9/database/001_add_updatecolumn9.sql",
+      "rollbackUrl": "https://raw.githubusercontent.com/greenstem-web/Greenplus_Updates/main/releases/v1.1.9/database/001_rollback.sql"
     }
   ]
 }
