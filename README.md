@@ -259,7 +259,7 @@ Verify the output files exist:
 Get-ChildItem "D:\Greenplus_Local\GreenplusLocal\CoreWinUI\bin\Release\net9.0-windows\win-x64\publish"
 ```
 
-You should see: `CoreWinUI.exe`, `CoreWinUI.dll`, `Data.dll`, `CoreWinUI.deps.json`, `CoreWinUI.runtimeconfig.json`, `CoreWinUI.pdb`, `Data.pdb`
+You should see: `GreenplusAccounting.exe`, `GreenplusAccounting.dll`, `Data.dll`, `GreenplusAccounting.deps.json`, `GreenplusAccounting.runtimeconfig.json`, `GreenplusAccounting.pdb`, `Data.pdb`
 
 ---
 

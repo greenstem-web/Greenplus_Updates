@@ -24,12 +24,12 @@ $ZipPath = "$OutputBase\GreenplusAccounting_v$Version.zip"
 
 # Files to include in update package
 $FilesToPackage = @(
-    "CoreWinUI.exe",
-    "CoreWinUI.dll",
+    "GreenplusAccounting.exe",
+    "GreenplusAccounting.dll",
     "Data.dll",
-    "CoreWinUI.deps.json",
-    "CoreWinUI.runtimeconfig.json",
-    "CoreWinUI.pdb",
+    "GreenplusAccounting.deps.json",
+    "GreenplusAccounting.runtimeconfig.json",
+    "GreenplusAccounting.pdb",
     "Data.pdb"
 )
 
@@ -124,12 +124,12 @@ $readmeContent = @"
 
 ## Files Included
 
-- CoreWinUI.exe (Main executable)
-- CoreWinUI.dll (Application library)
+- GreenplusAccounting.exe (Main executable)
+- GreenplusAccounting.dll (Application library)
 - Data.dll (Data access layer)
-- CoreWinUI.deps.json (Dependencies manifest)
-- CoreWinUI.runtimeconfig.json (Runtime configuration)
-- CoreWinUI.pdb (Debug symbols)
+- GreenplusAccounting.deps.json (Dependencies manifest)
+- GreenplusAccounting.runtimeconfig.json (Runtime configuration)
+- GreenplusAccounting.pdb (Debug symbols)
 - Data.pdb (Debug symbols)
 
 ## Package Details
@@ -159,10 +159,10 @@ The application will:
 ## Manual Installation
 
 If you need to manually install:
-1. Close CoreWinUI.exe
+1. Close GreenplusAccounting.exe
 2. Extract ZIP to installation directory
 3. **DO NOT overwrite appsettings.json** (if prompted)
-4. Restart CoreWinUI.exe
+4. Restart GreenplusAccounting.exe
 "@
 
 $readmeContent | Out-File -FilePath $readmePath -Encoding UTF8
